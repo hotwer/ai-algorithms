@@ -1,6 +1,6 @@
 "use strict";
 
-function Neuronium(synapse, pulseDataSize, activationFunction) {
+function Neuron(synapse, pulseDataSize, activationFunction) {
     var self = this;
 
     self.incomingSynapse = synapse;
@@ -14,7 +14,7 @@ function Neuronium(synapse, pulseDataSize, activationFunction) {
     }
 }
 
-Neuronium.prototype.changeSynapseWeight = function (synapseWeight) {
+Neuron.prototype.changeSynapseWeight = function (synapseWeight) {
     synapseWeight = parseFloat(synapseWeight);
 
     if (_.isNaN(synapseWeight)) {
@@ -24,7 +24,7 @@ Neuronium.prototype.changeSynapseWeight = function (synapseWeight) {
     this.incomingSynapse.setWeight(synapseWeight)
 };
 
-Neuronium.prototype.insertPulse = function (pulseData) {
+Neuron.prototype.insertPulse = function (pulseData) {
     var pulseDataOperationResult = 0;
 
     if (!_.isArray(pulseData)) {

@@ -10,7 +10,7 @@ Synapse.prototype.setWeight = function (weight) {
     this.weight = weight;
 };
 
-Synapse.prototype.transmitPulse = function(data) {
+Synapse.prototype.transmitPulse = function (data) {
     data = parseInt(data);
 
     if (_.isNaN(data)) {

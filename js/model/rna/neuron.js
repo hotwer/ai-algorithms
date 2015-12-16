@@ -1,9 +1,9 @@
 "use strict";
 
-function Neuron(synapse, pulseDataSize, activationFunction) {
+function Neuron(activationFunction) {
     var self = this;
 
-    self.incomingSynapse = synapse;
+    self.incomingSynapses = [];
     self.pulseDataSize = pulseDataSize;
     self.activationFunction = activationFunction;
 
@@ -14,21 +14,27 @@ function Neuron(synapse, pulseDataSize, activationFunction) {
     }
 }
 
-Neuron.prototype.changeSynapseWeight = function (synapseWeight) {
+Neuron.prototype.insertSynapse = function (synapseWeight) {
+    this.incomingSynapses = new Synapse(synapseWeight);
+    return this;
+};
+
+Neuron.prototype.changeSynapseWeight = function (synapseIndex, synapseWeight) {
     synapseWeight = parseFloat(synapseWeight);
 
     if (_.isNaN(synapseWeight)) {
         synapseWeight = 0000.1;
     }
 
-    this.incomingSynapse.setWeight(synapseWeight)
+    this.incomingSynapses.setWeight(synapseWeight)
+    return this;
 };
 
 Neuron.prototype.insertPulse = function (pulseData) {
     var pulseDataOperationResult = 0;
 
     if (!_.isArray(pulseData)) {
-        throw "Pulse data must be an array of size " + this.pulseDataSize;
+        throw "Pulse data must be an array of size ";
     }
 
     for (var i = 0; i < this.pulseDataSize; i++) {
@@ -36,7 +42,7 @@ Neuron.prototype.insertPulse = function (pulseData) {
             throw "Pulse data must be an array of size " + this.pulseDataSize;
         }
 
-        pulseDataOperationResult = pulseDataOperation(pulseDataOperationResult, this.incomingSynapse.transmitPulse(pulseData[i]));
+        pulseDataOperationResult = pulseDataOperation(pulseDataOperationResult, this.incomingSynapses.transmitPulse(pulseData[i]));
     }
 
     return this.activationFunction(pulseDataOperationResult);

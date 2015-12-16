@@ -2,24 +2,28 @@
 
 /**
  *
- * @param {int} pulseDataSize
  * @param {function} activationFunction
+ * @param {boolean||string} controlByVerificationFunction
  * @param {function} verificationFunction
  * @param {BrainArchitecture} brainArchitecture
  * @param {boolean||string} workWithBias
  * @constructor
  */
-function Brain(pulseDataSize,
-               activationFunction,
+function Brain(activationFunction,
+               controlByVerificationFunction,
                verificationFunction,
                brainArchitecture,
-               workWithBias) {
+               workWithBias,) {
     var self = this, layer, numberOfNeurons;
 
-    self.activationFunction = activationFunction || function () { return 0; };
-    //self.verificationFunction = verificationFunction || function () { return 0; };
-    self.pulseDataSize = parseInt(pulseDataSize) || 0;
+    self.activationFunction = activationFunction || function () {
+            return 0;
+        };
+    self.verificationFunction = verificationFunction || function () {
+            return 0;
+        };
     self.numberOfLayers = parseInt(brainArchitecture.getNumberOfLayers()) || 1;
+    self.controlByVerificationFunction = _.isString(controlByVerificationFunction) ? controlByVerificationFunction.toLowerCase() === "true" : !!controlByVerificationFunction;
     self.workWithBias = _.isString(workWithBias) ? workWithBias.toLowerCase() === "true" : !!workWithBias;
     self.neuronLayers = [];
 

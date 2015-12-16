@@ -6,7 +6,9 @@ rnaController.$inject = [];
 
 function rnaController()
 {
-    var brain = new Brain(2, activationFunction, verificationFunction, brainArchtecture, 1);
+    var brainArchtecture = new BrainArchitecture(),
+        brain = new Brain(2, activationFunction, brainArchtecture, 1);
+
 
     function activationFunction() {
 

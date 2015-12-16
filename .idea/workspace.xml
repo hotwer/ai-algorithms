@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aee7da7e-906d-4c5c-8224-7cc4f1780d22" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/model/rna/dataFlow.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/model/rna/brain.js" afterPath="$PROJECT_DIR$/js/model/rna/brain.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/model/rna/brainArchitecture.js" afterPath="$PROJECT_DIR$/js/model/rna/brainArchitecture.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/model/rna/neuron.js" afterPath="$PROJECT_DIR$/js/model/rna/neuron.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/model/rna/neuronLayer.js" afterPath="$PROJECT_DIR$/js/model/rna/neuronLayer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/model/rna/processedData.js" afterPath="$PROJECT_DIR$/js/model/rna/processedData.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/controller/rna-controller.js" afterPath="$PROJECT_DIR$/js/controller/rna-controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/model/rna/dataFlow.js" afterPath="$PROJECT_DIR$/js/model/rna/dataFlow.js" />
     </list>
     <ignored path="ai-algorigthms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,8 +49,8 @@
       <file leaf-file-name="dataFlow.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/model/rna/dataFlow.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7759473">
-              <caret line="50" column="20" selection-start-line="50" selection-start-column="20" selection-end-line="50" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.7479407">
+              <caret line="50" column="41" selection-start-line="50" selection-start-column="41" selection-end-line="50" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -633,8 +625,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/model/rna/dataFlow.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7759473">
-          <caret line="50" column="20" selection-start-line="50" selection-start-column="20" selection-end-line="50" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.7479407">
+          <caret line="50" column="41" selection-start-line="50" selection-start-column="41" selection-end-line="50" selection-end-column="41" />
           <folding />
         </state>
       </provider>

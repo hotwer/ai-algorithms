@@ -47,7 +47,7 @@ DataFlow.prototype.getExpectedData = function () {
     return this.tests[this.internalPointer].expected;
 };
 
-DataFlow.prototype.verificateExpected = function () {
-    return data === 
+DataFlow.prototype.verificateExpected = function (data) {
+    return  data.getData() === this.test.expected[this.internalPointer];
 };
 

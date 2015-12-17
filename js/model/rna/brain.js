@@ -6,15 +6,13 @@
  * @param {boolean||string} controlByVerificationFunction
  * @param {function} verificationFunction
  * @param {BrainArchitecture} brainArchitecture
- * @param {boolean||string} workWithBias
  * @constructor
  */
 function Brain(activationFunction,
                controlByVerificationFunction,
                verificationFunction,
-               brainArchitecture,
-               workWithBias,) {
-    var self = this, layer, numberOfNeurons;
+               brainArchitecture) {
+    var self = this, layer, numberOfNeurons, numberOfSynapses, neuron;
 
     self.activationFunction = activationFunction || function () {
             return 0;
@@ -22,9 +20,10 @@ function Brain(activationFunction,
     self.verificationFunction = verificationFunction || function () {
             return 0;
         };
+
     self.numberOfLayers = parseInt(brainArchitecture.getNumberOfLayers()) || 1;
     self.controlByVerificationFunction = _.isString(controlByVerificationFunction) ? controlByVerificationFunction.toLowerCase() === "true" : !!controlByVerificationFunction;
-    self.workWithBias = _.isString(workWithBias) ? workWithBias.toLowerCase() === "true" : !!workWithBias;
+    self.workWithBias = brainArchitecture.isWorkingWithBias();
     self.neuronLayers = [];
 
     if (_.isNaN(self.pulseDataSize)) {
@@ -35,23 +34,20 @@ function Brain(activationFunction,
         self.numberOfLayers = 0;
     }
 
-    if (self.workWithBias) {
-        ++pulseDataSize;
-    }
-
     for (var l = 0; l < self.numberOfLayers; l++) {
         numberOfNeurons = brainArchitecture.getNumberOfNeuronsInLayer(l);
+        numberOfSynapses = l === 0 ? 1 : numberOfNeurons * brainArchitecture.getNumberOfNeuronsInLayer(l - 1);
 
         layer = new NeuronLayer();
 
         for (var n = 0; n < numberOfNeurons; n++) {
-            layer.pushNeuron(
-                new Neuron(
-                    new Synapse(Math.random()),
-                    self.pulseDataSize,
-                    self.activationFunction
-                )
-            );
+            neuron = new Neuron(self.activationFunction);
+
+            for (var s = 0; s < numberOfSynapses; s++) {
+                neuron.addIncomingSynapse(Math.random());
+            }
+
+            layer.pushNeuron(neuron);
         }
 
         self.neuronLayers.push(layer);
@@ -62,11 +58,17 @@ function Brain(activationFunction,
 Brain.prototype.insertData = function (data) {
     var _data;
 
-    if (!_.isArray(data) || data.length !== this.pulseDataSize) {
-        throw "Data must be an array of size " + this.pulseDataSize;
+    if (!_.isArray(data)) {
+        throw "Data must be an array of size "
+    }
+
+    if (this.workWithBias) {
+        data.push(1);
     }
 
     _data = processData(data);
+
+    return _data;
 
     function processData(data) {
         var processedData = [];
@@ -81,4 +83,27 @@ Brain.prototype.insertData = function (data) {
 
         return processedData;
     }
+};
+
+/**
+ *
+ * @param {DataFlow} dataFlow
+ */
+Brain.prototype.train = function (dataFlow) {
+    var processedData, dataFlowSize = dataFlow.getLength();
+
+    for (var i = 0; i < dataFlowSize; i++) {
+
+        processedData = this.insertData(dataFlow.getData());
+
+        if (dataFlow.verificateExpected(processedData)) {
+            this.propagateReweight(processedData, dataFlow.getExpectedData(), dataFlow.getCalculator());
+        }
+
+        dataFlow.next();
+    }
+};
+
+Brain.prototype.propagateReweight = function (resulted, expeceted, calculator) {
+
 };

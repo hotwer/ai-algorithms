@@ -1,28 +1,50 @@
 "use strict";
 
-function NeuronLayer(numberOfNeurons) {
+function NeuronLayer() {
     var self = this;
 
     self.neurons = [];
-
+    self.firstLayer = false;
 }
 
 NeuronLayer.prototype.getNeuron = function (index) {
-    return self.neurons[index];
+    return this.neurons[index];
 };
 
 NeuronLayer.prototype.pushNeuron = function (neuronium) {
-    self.neurons.push(neuronium);
+    this.neurons.push(neuronium);
+    return this;
+};
+
+NeuronLayer.prototype.setAsFirstLayer = function () {
+    this.firstLayer = true;
+    return this;
+};
+
+NeuronLayer.prototype.unsetAsFirstLayer = function () {
+    this.firstLayer = false;
+    return this;
+};
+
+NeuronLayer.prototype.isFirstLayer = function () {
+    return this.firstLayer;
 };
 
 NeuronLayer.prototype.pulseData = function (data) {
-    var processedData = [];
+    var processedData = [], i;
 
-    for (var i = 0; i < self.neurons.length; i++) {
-        processedData.push({
-            neuronIndex: i,
-            data: this.neurons[i].insertPulse(data)
-        });
+    if (this.isFirstLayer()) {
+
+        for (i = 0; i < this.neurons.length; i++) {
+            processedData.push(new ProcessedData(this.neurons[i].insertPulse([data[i]])));
+        }
+
+    } else {
+
+        for (i = 0; i < this.neurons.length; i++) {
+            processedData.push(new ProcessedData(this.neurons[i].insertPulse(data)));
+        }
+
     }
 
     return processedData;

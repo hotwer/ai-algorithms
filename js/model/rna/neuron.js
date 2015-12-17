@@ -1,23 +1,25 @@
 "use strict";
 
-function Neuron(activationFunction) {
+function Neuron(activationFunction, startPulseDataOperationResult, pulseDataOperation, handlePulseDataOperationResult) {
     var self = this;
 
     self.incomingSynapses = [];
-    self.pulseDataSize = pulseDataSize;
     self.activationFunction = activationFunction;
+    self.startPulseDataOperationResult = startPulseDataOperationResult;
+    self.pulseDataOperation = pulseDataOperation;
+    self.handlePulseDataOperationResult = handlePulseDataOperationResult;
 
 
-    //soma das saidas de todas das sinapses de entrada
-    function pulseDataOperation(pulseDataOperationResult, pulseData) {
-        return pulseDataOperationResult + pulseData;
-    }
 }
 
-Neuron.prototype.insertSynapse = function (synapseWeight) {
+Neuron.prototype.addIncomingSynapse = function (synapseWeight) {
     this.incomingSynapses = new Synapse(synapseWeight);
     return this;
 };
+
+//Neuron.prototype.getNumberOfIncomingSynapses = function () {
+//    return this.incomingSynapses.length;
+//};
 
 Neuron.prototype.changeSynapseWeight = function (synapseIndex, synapseWeight) {
     synapseWeight = parseFloat(synapseWeight);
@@ -26,24 +28,47 @@ Neuron.prototype.changeSynapseWeight = function (synapseIndex, synapseWeight) {
         synapseWeight = 0000.1;
     }
 
-    this.incomingSynapses.setWeight(synapseWeight)
+    this.incomingSynapses[synapseIndex].setWeight(synapseWeight)
     return this;
 };
 
 Neuron.prototype.insertPulse = function (pulseData) {
-    var pulseDataOperationResult = 0;
+    var pulseDataOperationResult = this.startPulseDataOperationResult(), response;
 
     if (!_.isArray(pulseData)) {
-        throw "Pulse data must be an array of size ";
+        throw "Pulse data must be an array of size " + this.incomingSynapses.length;
     }
 
-    for (var i = 0; i < this.pulseDataSize; i++) {
+    for (var i = 0; i < this.incomingSynapses.length; i++) {
         if (_.isUndefined(pulseData[i])) {
-            throw "Pulse data must be an array of size " + this.pulseDataSize;
+            throw "Pulse data must be an array of size " + this.incomingSynapses.length;
         }
 
-        pulseDataOperationResult = pulseDataOperation(pulseDataOperationResult, this.incomingSynapses.transmitPulse(pulseData[i]));
+        pulseDataOperationResult = this.pulseDataOperation(pulseDataOperationResult, this.incomingSynapses.transmitPulse(pulseData[i]));
     }
 
-    return this.activationFunction(pulseDataOperationResult);
+    return this.handlePulseDataOperationResult(pulseDataOperationResult, this);
+
+    function handlePulseDataOperationResult(pulseDataOperationResult, scope) {
+        if (scope.verificationFunction(scope.activationFunction(pulseDataOperationResult))) {
+            return pulseDataOperationResult;
+        } else {
+            return null;
+        }
+    }
+
+    // soma das saidas de todas das sinapses de entrada
+    // a ideia é que essa funcionalidade não seja fixa
+    // por exemplo, o pulseDataOpenrationpoderia ser um array e a operação seria uma operação em um array
+    // ou o ele fosse uma string e a operation fosse uma concatenação específica
+    function startPulseDataOperationResult() {
+        return 0;
+    }
+
+    function pulseDataOperation(pulseDataOperationResult, pulseData) {
+        if (_.isNull(pulseData)) {
+            pulseData = 0;
+        }
+        return pulseDataOperationResult + pulseData;
+    }
 };
